@@ -1,0 +1,136 @@
+@layout('main')
+
+@section('content')
+  <div class="card mb-4 h-auto">
+      <div class="card-body">
+          <h3 class="card-title display-4">Random Contestant Picker</h3>
+          <i><a href="/about">What is RCP?</a></i>
+          <div class="row">
+              <div class="col-sm-4">
+                  <div class="card">
+                      <div class="card-body">
+                          <h5 class="card-title">Generate Random Contestant</h5>
+
+                          @if((old('displayCode')))
+                            <h4 class="display-4"> {{old('displayCode')}}</h4>
+                          @endif
+
+                          @if((old('displayMessage')))
+                            <h6 class="regenerate p-4 mt-1 mb-2"> {{old('displayMessage')}}</h6>
+                          @endif
+
+                          <form action="/generate" method="post">
+                              {{ csrfField() }}
+                              <button class="btn btn-primary" type="submit">Generate</button>
+                          </form>
+                      </div>
+                  </div>
+
+                  <div class="card mt-4">
+                      <div class="card-body">
+                          <h5 class="card-title">Register Contestant</h5>
+                              @if(old('registerMessage'))
+                                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                      {{old('registerMessage')}}
+                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                      </button>
+                                  </div>
+                              @endif
+
+                              <form action="/register" method="post">
+                                  {{ csrfField() }}
+                                  <div class="form-group">
+                                      <label>First Name</label>
+                                      <input type="text" class="form-control" placeholder="First Name" name="firstName" required>
+                                  </div required>
+
+                                  <div class="form-group">
+                                      <label>Last Name</label>
+                                      <input type="text" class="form-control" placeholder="Last Name" name="lastName" required>
+                                  </div>
+
+                                  <div class="form-group">
+                                      <label>Email</label>
+                                      <input type="email" class="form-control" placeholder="Email" name="email" required>
+                                  </div>
+
+                                  <div class="form-group">
+                                      <label>Phone Number</label>
+                                      <input type="text" class="form-control" placeholder="Phone Number" name="phoneNo" required>
+                                  </div>
+                                  <button class="btn btn-primary" type="submit">Submit</button>
+                              </form>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="col-sm-8">
+                  <div class="card mb-4">
+                      <div class="card-body">
+                          <h5 class="card-title">Registered Contestants</h5>
+                          <div class="table-responsive">
+                              <table class="table table-hover">
+                                  <thead>
+                                      <tr>
+                                      <th scope="col">#</th>
+                                      <th scope="col">First Name</th>
+                                      <th scope="col">Last Name</th>
+                                      <th scope="col">E-mail</th>
+                                      <th scope="col">Phone Number</th>
+                                      <th scope="col">Unique Code</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      @each(registeredContestant in registeredContestants)
+                                      <tr>
+                                          <th scope="row">{{registeredContestant.id}}</th>
+                                          <td>{{registeredContestant.firstName}}</td>
+                                          <td>{{registeredContestant.lastName}}</td>
+                                          <td>{{registeredContestant.email}}</td>
+                                          <td>{{registeredContestant.phoneNo}}</td>
+                                          <td>{{registeredContestant.uniqueCode}}</td>
+                                      </tr>
+                                      @endeach
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Eligible Contestants</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">E-mail</th>
+                                    <th scope="col">Phone Number</th>
+                                    <th scope="col">Unique Code</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @each(eligibleContestant in eligibleContestants)
+                                    <tr>
+                                        <th scope="row">{{eligibleContestant.id}}</th>
+                                        <td>{{eligibleContestant.firstName}}</td>
+                                        <td>{{eligibleContestant.lastName}}</td>
+                                        <td>{{eligibleContestant.email}}</td>
+                                        <td>{{eligibleContestant.phoneNo}}</td>
+                                        <td>{{eligibleContestant.uniqueCode}}</td>
+                                    </tr>
+                                    @endeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+@endsection
